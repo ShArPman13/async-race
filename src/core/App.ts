@@ -1,5 +1,6 @@
 import { Garage } from './components/Garage';
 import { Header } from './components/Header';
+import { Winners } from './components/Winners';
 
 export class App {
   container: HTMLElement = document.body;
@@ -13,9 +14,10 @@ export class App {
   renderPage(idPage: string) {
     const id = idPage;
     document.body.innerHTML = '';
-    let page: Garage | null = null;
+    let page: Garage | Winners | null = null;
+
     if (id === 'winners') {
-      // console.log('winners');
+      page = new Winners();
     } else {
       page = new Garage();
     }
@@ -23,15 +25,19 @@ export class App {
       const pageHTML = page.render();
       const containerMain = document.createElement('main');
       containerMain.id = 'root';
-      containerMain.append(pageHTML);
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'main-wrapper';
+      wrapper.append(pageHTML);
+
+      containerMain.append(wrapper);
       this.container.append(this.header.render(), containerMain);
     }
   }
 
   router() {
     const loadPage = () => {
-      const hash = window.location.hash.slice(1);
-      console.log(hash);
+      const hash = window.location.hash.slice(2);
 
       if (hash === 'winners') {
         this.renderPage('winners');
