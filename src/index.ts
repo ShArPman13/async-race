@@ -1,3 +1,5 @@
+import { App } from './core/App';
 import './main.scss';
 
-console.log('Hello');
+const app = new App();
+app.run();

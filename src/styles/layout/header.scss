@@ -1,0 +1,33 @@
+.header {
+  @include flex;
+
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100px;
+}
+
+.header-wrapper {
+  @include flex;
+
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+  gap: 10px;
+}
+
+.header__btn {
+  @include flex;
+  @include font(Josefin Sans, 1rem, 500);
+
+  border: none;
+  background-color: transparent;
+  opacity: 0.5;
+  transition: 0.25s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+    transition: 0.25s;
+  }
+}

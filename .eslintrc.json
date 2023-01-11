@@ -15,7 +15,25 @@
     "@typescript-eslint/no-explicit-any": 2,
     "no-debugger": "off",
     "no-console": 1,
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   },
-  "ignorePatterns": ["index.html", "webpack.config.js", "webpack.dev.config.js", "webpack.prod.config.js"]
+  "ignorePatterns": ["index.html", "webpack.config.js", "webpack.dev.config.js", "webpack.prod.config.js"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
 }
