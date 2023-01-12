@@ -11,7 +11,7 @@ export class App {
     this.header = new Header();
   }
 
-  renderPage(idPage: string) {
+  async renderPage(idPage: string) {
     const id = idPage;
     document.body.innerHTML = '';
     let page: Garage | Winners | null = null;
@@ -22,7 +22,7 @@ export class App {
       page = new Garage();
     }
     if (page) {
-      const pageHTML = page.render();
+      const pageHTML = await page.render();
       const containerMain = document.createElement('main');
       containerMain.id = 'root';
 

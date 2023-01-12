@@ -1,7 +1,8 @@
-const baseURL = 'http://127.0.0.1:3000';
+import { BASE_URL } from '../constants/BASE_URL';
+import { Endpoints } from '../types/Endpoints';
 
 export const getCars = async () => {
-  const response = fetch(`${baseURL}/garage`);
+  const response = await fetch(`${BASE_URL}${Endpoints.Garage}`);
 
-  return (await response).json();
+  return response.json();
 };
