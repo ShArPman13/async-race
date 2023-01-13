@@ -3,6 +3,7 @@ textarea,
 input:active,
 textarea:active {
   outline: none;
+  height: 20px;
 }
 
 .input-text:focus::input-placeholder {

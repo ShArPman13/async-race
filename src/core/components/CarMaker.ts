@@ -1,4 +1,5 @@
 import { addCar } from '../api/addCar';
+import { observer } from '../App';
 
 export class CarMaker {
   container: HTMLDivElement = document.createElement('div');
@@ -14,15 +15,15 @@ export class CarMaker {
     inputColor.className = 'garage__input';
     inputColor.type = 'color';
 
-    const createBTN = document.createElement('button');
-    createBTN.className = 'carmaker-btn btn';
-    createBTN.innerText = '+';
+    const createBTN = document.createElement('i');
+    createBTN.className = 'fa-solid fa-square-check';
 
     createBTN.addEventListener('click', async () => {
       await addCar({
         name: inputName.value,
         color: inputColor.value,
       });
+      observer.update();
     });
 
     this.container.append(inputName, inputColor, createBTN);

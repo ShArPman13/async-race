@@ -1,6 +1,9 @@
 import { Garage } from './components/Garage';
 import { Header } from './components/Header';
 import { Winners } from './components/Winners';
+import { Observable } from './utils/Observable';
+
+export const observer = Observable<null>();
 
 export class App {
   container: HTMLElement = document.body;
@@ -13,13 +16,14 @@ export class App {
 
   async renderPage(idPage: string) {
     const id = idPage;
+
     document.body.innerHTML = '';
     let page: Garage | Winners | null = null;
 
     if (id === 'winners') {
       page = new Winners();
     } else {
-      page = new Garage();
+      page = new Garage(observer);
     }
     if (page) {
       const pageHTML = await page.render();
