@@ -19,7 +19,7 @@ export class CarTuner {
     dark.addEventListener('click', (e: MouseEvent) => {
       const target = <HTMLElement>e.target;
       if (!target.closest('.garage__car-tune')) {
-        document.body.firstElementChild?.remove();
+        dark.remove();
       }
     });
 
@@ -36,7 +36,7 @@ export class CarTuner {
     inputColor.value = this.color;
 
     const changeBTN = document.createElement('i');
-    changeBTN.className = 'fa-solid fa-square-check change';
+    changeBTN.className = 'fa-solid fa-circle-check change';
 
     changeBTN.addEventListener('click', async () => {
       await updateCar(this.id, {

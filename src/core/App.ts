@@ -1,5 +1,6 @@
 import { Garage } from './components/Garage';
 import { Header } from './components/Header';
+import { Singleton } from './components/Singleton';
 import { Winners } from './components/Winners';
 import { Observable } from './utils/Observable';
 
@@ -23,7 +24,7 @@ export class App {
     if (id === 'winners') {
       page = new Winners();
     } else {
-      page = new Garage(observer);
+      page = Singleton.getInstance();
     }
     if (page) {
       const pageHTML = await page.render();

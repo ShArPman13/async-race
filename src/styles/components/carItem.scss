@@ -4,6 +4,7 @@
 
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-around;
   border-radius: 10px;
   padding: 10px;
   width: 100%;
@@ -16,12 +17,14 @@
 .cars-container__top {
   @include flex;
 
+  position: relative;
+  top: -20px;
   gap: 10px;
 
   .cars-container__name {
     @include font(Montserrat, 1.5rem, 300);
 
-    opacity: 0.7;
+    opacity: 0.8;
   }
 
   .fa-wrench {
@@ -30,30 +33,40 @@
 
   .fa-wrench,
   .fa-trash {
-    font-size: 1.5rem;
-    opacity: 0.5;
+    font-size: 1rem;
+    opacity: 0.8;
     cursor: pointer;
 
     &:hover {
       opacity: 1;
     }
   }
-}
-
-.cars-container__bottom {
-  @include flex;
-
-  gap: 10px;
 
   .fa-circle-play,
   .fa-circle-stop {
     font-size: 1.5rem;
-    opacity: 1;
+    transition: 0.25s;
     cursor: pointer;
 
     &:hover {
       opacity: 1;
     }
+
+    &.hidden {
+      color: rgb(255 255 255);
+      opacity: 0.3;
+      transition: 0.25s;
+      cursor: auto;
+      pointer-events: none;
+    }
+  }
+
+  .fa-circle-play {
+    color: rgb(54 211 54);
+  }
+
+  .fa-circle-stop {
+    color: rgb(224 74 74);
   }
 }
 
@@ -66,9 +79,8 @@
 
   .fa-truck-monster {
     position: absolute;
-    left: 70px;
-    top: -48px;
-    font-size: 3rem;
+    top: -65px;
+    font-size: 4rem;
   }
 
   .material-symbols-outlined {
