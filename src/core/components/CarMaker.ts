@@ -48,7 +48,7 @@ export class CarMaker {
     this.raceBTN.className = 'race-block__race';
     this.raceBTN.textContent = 'RACE';
 
-    this.refreshBTN.className = 'race-block__refresh';
+    this.refreshBTN.className = 'race-block__refresh hidden';
     this.refreshBTN.textContent = 'REFRESH';
 
     this.generateBTN.className = 'race-block__generate';

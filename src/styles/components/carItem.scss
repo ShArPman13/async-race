@@ -89,5 +89,23 @@
     top: -101px;
     font-size: 7.5rem;
     opacity: 0.6;
+
+    &.won {
+      color: #13ef13;
+      opacity: 1;
+
+      &::before {
+        @include font(Montserrat, 1.5rem, 700);
+
+        content: attr(txt);
+        position: absolute;
+        right: 100px;
+        top: 25%;
+
+        @media (max-width: 600px) {
+          font-size: 1rem;
+        }
+      }
+    }
   }
 }

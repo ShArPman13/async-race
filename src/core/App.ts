@@ -1,10 +1,12 @@
 import { Garage } from './components/Garage';
 import { Header } from './components/Header';
-import { Singleton } from './components/Singleton';
+import { SingletonGarage } from './components/SingletonGarage';
+import { SingletonWinners } from './components/SingletonWinners';
 import { Winners } from './components/Winners';
 import { Observable } from './utils/Observable';
 
 export const observer = Observable<null>();
+export const observerForWinners = Observable<null>();
 
 export class App {
   container: HTMLElement = document.body;
@@ -22,9 +24,9 @@ export class App {
     let page: Garage | Winners | null = null;
 
     if (id === 'winners') {
-      page = new Winners();
+      page = SingletonWinners.getInstance();
     } else {
-      page = Singleton.getInstance();
+      page = SingletonGarage.getInstance();
     }
     if (page) {
       const pageHTML = await page.render();

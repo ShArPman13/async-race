@@ -16,10 +16,10 @@ export class CarTuner {
     const dark = document.createElement('div');
     dark.className = 'dark';
 
-    dark.addEventListener('click', (e: MouseEvent) => {
+    dark.addEventListener('mousedown', (e: MouseEvent) => {
       const target = <HTMLElement>e.target;
       if (!target.closest('.garage__car-tune')) {
-        dark.remove();
+        dark.classList.add('hidden');
       }
     });
 
@@ -44,7 +44,7 @@ export class CarTuner {
         color: inputColor.value,
       });
       observer.update();
-      document.body.firstElementChild?.remove();
+      dark.classList.add('hidden');
     });
 
     this.container.append(inputName, inputColor, changeBTN);

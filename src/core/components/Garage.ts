@@ -6,33 +6,36 @@ import { animationStopCrash } from '../utils/animationStopCrash';
 import { IObserver } from '../utils/Observable';
 import { CarMaker } from './CarMaker';
 import { CarTuner } from './CarTuner';
-import { driveCar } from '../api/driveCar';
+import { controllers, driveCar } from '../api/driveCar';
 import { IDriveResponse } from '../types/IDriveResponse';
 import { stopEngine } from '../api/stopEngine';
 import { generateCars } from '../utils/getRandomCarName';
 import { addCar } from '../api/addCar';
 import { animationStart } from '../utils/animationStart';
 import { animationStop } from '../utils/animationStop';
-
-interface ICarFieldObj {
-  component: HTMLDivElement;
-  id: number;
-  carName: HTMLDivElement;
-  car: HTMLElement;
-  stop: HTMLElement;
-  play: HTMLElement;
-}
+import { ICarFieldObj } from '../types/ICarFieldObj';
+import { createWinnerInApi } from '../utils/createWinnerInApi';
+import { showWin } from '../utils/showWinRoad';
+import { observerForWinners } from '../App';
 
 export class Garage {
-  container: HTMLDivElement | null = null;
+  container: HTMLElement | null = null;
 
-  carsContainer: HTMLDivElement = document.createElement('div');
+  public carsContainer: HTMLDivElement = document.createElement('div');
 
-  addCar: CarMaker;
+  public addCar: CarMaker;
+
+  private block: CarTuner | null = null;
+
+  public blockHTML: HTMLDivElement | null = null;
 
   cars: ICar[] = [];
 
   arrayOfCarFields: ICarFieldObj[] = [];
+
+  isWinner = 0;
+
+  winnersIDS: number[] = [];
 
   constructor(public observer: IObserver<null>) {
     this.addCar = new CarMaker();
@@ -43,6 +46,54 @@ export class Garage {
   observe() {
     this.observer.subscribe(() => {
       this.drawCars();
+    });
+  }
+
+  getAllTimeBeforeRace() {
+    return this.arrayOfCarFields.map(async (car: ICarFieldObj) => {
+      const monsterCar = car.car;
+      monsterCar.style.transitionDuration = '0s';
+      monsterCar.style.rotate = '0deg';
+      monsterCar.style.left = '0';
+      const timeMS = await getDriveTime(car.id);
+      return timeMS;
+    });
+  }
+
+  async startRaceAllCars(timeMS: number[]) {
+    controllers.length = 0;
+    this.arrayOfCarFields.map(async (car: ICarFieldObj, i) => {
+      const winPoint = car.finish;
+      const seconds = Number((timeMS[i] / 1000).toFixed(2));
+      animationStart(car.car, car.component, timeMS[i]);
+      car.stop.classList.remove('hidden');
+      car.play.classList.add('hidden');
+      const responseDrive: IDriveResponse = await driveCar(car.id);
+      if (!responseDrive.success && responseDrive && !this.addCar.refreshBTN.classList.contains('hidden')) {
+        const leftPos = getComputedStyle(car.car);
+        animationStopCrash(car.car, leftPos);
+      } else {
+        this.isWinner += 1;
+        if (this.isWinner === 1 && responseDrive.success) {
+          await createWinnerInApi(car, timeMS[i]);
+          showWin(winPoint, car.carNameText, seconds);
+          observerForWinners.update();
+        }
+      }
+    });
+  }
+
+  stopRaceAllCars() {
+    controllers.forEach((controller) => controller.abort());
+
+    return this.arrayOfCarFields.map(async (car: ICarFieldObj) => {
+      const winPoint = car.finish;
+      await stopEngine(car.id);
+      animationStop(car.car);
+      car.stop.classList.add('hidden');
+      car.play.classList.remove('hidden');
+      this.isWinner = 0;
+      winPoint.classList.remove('won');
     });
   }
 
@@ -62,51 +113,45 @@ export class Garage {
 
     this.addCar.generateBTN.addEventListener('click', async () => {
       const cars = generateCars();
-      await Promise.all(cars.map(async (car) => addCar(car)));
-      this.observer.update();
+      try {
+        await Promise.all(cars.map(async (car) => addCar(car))).catch(Error);
+        this.observer.update();
+      } catch (err) {
+        console.log('104', err);
+      }
     });
 
     this.addCar.deleteBTN.addEventListener('click', async () => {
-      const cars = await getCars();
-      await Promise.all(cars.map(async (car: ICar) => deleteCar(car.id)));
-      this.observer.update();
+      try {
+        const cars = await getCars();
+        await Promise.all(cars.map(async (car: ICar) => deleteCar(car.id))).catch(Error);
+        this.observer.update();
+      } catch (err) {
+        console.log('110', err);
+      }
     });
 
     this.addCar.raceBTN.addEventListener('click', async () => {
-      await Promise.all(
-        this.arrayOfCarFields.map(async (car: ICarFieldObj) => {
-          const monsterCar = car.car;
-          monsterCar.style.left = '0';
-          const timeMS = await getDriveTime(car.id);
-
-          return timeMS;
-          // eslint-disable-next-line comma-dangle
-        })
-      ).then((timeMS) => {
-        this.arrayOfCarFields.map(async (car: ICarFieldObj, i) => {
-          animationStart(car.car, car.component, timeMS[i]);
-          car.stop.classList.remove('hidden');
-          car.play.classList.add('hidden');
-          const responseDrive: IDriveResponse = await driveCar(car.id);
-          if (!responseDrive.success) {
-            const leftPos = getComputedStyle(car.car);
-            animationStopCrash(car.car, leftPos);
-          }
-        });
-      });
+      this.addCar.raceBTN.classList.add('hidden');
+      this.addCar.refreshBTN.classList.remove('hidden');
+      try {
+        const timeMS = await Promise.all(this.getAllTimeBeforeRace());
+        await this.startRaceAllCars(timeMS);
+      } catch (err) {
+        console.log('117', err);
+      }
     });
 
     this.addCar.refreshBTN.addEventListener('click', async () => {
-      await Promise.all(
-        this.arrayOfCarFields.map(async (car: ICarFieldObj) => {
-          await stopEngine(car.id);
-          animationStop(car.car);
-          car.stop.classList.add('hidden');
-          car.play.classList.remove('hidden');
-          // eslint-disable-next-line prettier/prettier
-        }),
-      );
+      this.addCar.refreshBTN.classList.add('hidden');
+      try {
+        await Promise.all(this.stopRaceAllCars());
+      } catch (err) {
+        console.log('126', err);
+      }
+      this.addCar.raceBTN.classList.remove('hidden');
     });
+
     wrapper.append(topContainer);
     wrapper.append(await this.drawCars());
 
@@ -148,8 +193,10 @@ export class Garage {
     wrench.className = 'fa-solid fa-wrench';
 
     wrench.addEventListener('click', () => {
-      const block = new CarTuner(car.id, car.name, car.color);
-      document.body.prepend(block.render());
+      this.block = new CarTuner(car.id, car.name, car.color);
+      this.blockHTML = this.block.render();
+      document.body.prepend(this.blockHTML);
+      this.blockHTML?.classList.remove('hidden');
     });
 
     const delCar = document.createElement('i');
@@ -206,9 +253,11 @@ export class Garage {
       component: carContainer,
       id: car.id,
       carName,
+      carNameText: car.name,
       car: monsterCar,
       stop,
       play,
+      finish,
     });
 
     road.append(monsterCar, finish);
