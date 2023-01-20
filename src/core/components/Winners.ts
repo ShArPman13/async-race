@@ -112,6 +112,7 @@ export class Winners {
     }
 
     elem.classList.toggle('asc');
+    console.log('test');
     if (elem.classList.contains('asc')) {
       up.classList.add('asc');
       down.classList.remove('desc');
