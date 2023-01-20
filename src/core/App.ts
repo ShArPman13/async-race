@@ -3,7 +3,7 @@ import { Header } from './components/Header';
 import { SingletonGarage } from './components/SingletonGarage';
 import { SingletonWinners } from './components/SingletonWinners';
 import { Winners } from './components/Winners';
-import { Observable } from './utils/obser';
+import { Observable } from './utils/Observable';
 
 export const observer = Observable<null>();
 export const observerForWinners = Observable<null>();
