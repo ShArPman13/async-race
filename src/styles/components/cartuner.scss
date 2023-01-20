@@ -1,0 +1,63 @@
+.garage__car-tune {
+  @include flex;
+
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  border-radius: 10px;
+  padding: 10px;
+  width: 300px;
+  height: 100px;
+  max-width: 1400px;
+  background-color: rgb(255 255 255 / 70%);
+  transform: translate(-50%, -50%);
+  gap: 5px;
+
+  &::before {
+    @include flex;
+    @include font(Montserrat, 1.5rem, 300);
+
+    content: "Change";
+    position: absolute;
+    top: 5px;
+    z-index: 2;
+    border-radius: 5px;
+    padding: 3px 10px;
+    width: 60%;
+    height: max-content;
+    color: rgb(0 0 0);
+  }
+}
+
+.fa-circle-check {
+  margin-left: 5px;
+  font-size: 2.8rem;
+  color: rgb(7 194 38);
+  opacity: 1;
+  cursor: pointer;
+
+  &.change {
+    position: absolute;
+    left: 50%;
+    top: 130%;
+    color: rgb(255 255 255 / 70%);
+    transform: translate(-50%, -50%);
+  }
+}
+
+.dark {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 999;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0 0 0 / 70%);
+  transform: translate(-50%, -50%);
+
+  &.hidden {
+    transform: scale(0);
+  }
+}

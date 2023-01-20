@@ -3,6 +3,11 @@ textarea,
 input:active,
 textarea:active {
   outline: none;
+  border: 2px solid rgb(255 255 255);
+  border-radius: 3px;
+  width: 80%;
+  height: 23px;
+  background-color: transparent;
 }
 
 .input-text:focus::input-placeholder {

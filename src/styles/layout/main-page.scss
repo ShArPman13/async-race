@@ -20,6 +20,12 @@
   max-width: 1400px;
 }
 
+.garage__top-container {
+  @include flex;
+
+  justify-content: space-between;
+}
+
 .garage__cars-container {
   @include flex;
 

@@ -1,5 +1,4 @@
-.header__btn,
-.btn {
+.header__btn {
   @include flex;
   @include font(Josefin Sans, 1rem, 500);
 
@@ -13,8 +12,4 @@
     opacity: 1;
     transition: 0.25s;
   }
-}
-
-.carmaker-btn {
-  font-size: 2.5rem;
 }

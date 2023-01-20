@@ -1,0 +1,16 @@
+.garage__race-block {
+  @include flex;
+
+  gap: 10px;
+}
+
+.race-block__race,
+.race-block__refresh {
+  &.hidden {
+    color: rgb(255 255 255);
+    opacity: 0.3;
+    transition: 0.25s;
+    cursor: auto;
+    pointer-events: none;
+  }
+}
