@@ -16,8 +16,8 @@ import { ICarFieldObj } from '../types/ICarFieldObj';
 import { createWinnerInApi } from '../utils/createWinnerInApi';
 import { showWin } from '../utils/showWinRoad';
 import { deleteWinner } from '../api/deleteWinner';
-import { IObserver } from '../utils/Observable';
 import { observerForWinners } from '../App';
+import { IObserver } from '../utils/obser';
 
 export class Garage {
   container: HTMLElement | null = null;

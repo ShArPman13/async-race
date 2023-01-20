@@ -3,7 +3,7 @@ import { SortOption } from '../types/SortOption';
 import { createElement } from '../utils/createElement';
 import { drawResults } from '../utils/drawResults';
 import { getWinData } from '../utils/getWinData';
-import { IObserver } from '../utils/Observable';
+import { IObserver } from '../utils/obser';
 
 export class Winners {
   container: HTMLDivElement | null = null;
