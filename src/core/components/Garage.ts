@@ -17,6 +17,7 @@ import { ICarFieldObj } from '../types/ICarFieldObj';
 import { createWinnerInApi } from '../utils/createWinnerInApi';
 import { showWin } from '../utils/showWinRoad';
 import { observerForWinners } from '../App';
+import { deleteWinner } from '../api/deleteWinner';
 
 export class Garage {
   container: HTMLElement | null = null;
@@ -204,7 +205,9 @@ export class Garage {
 
     delCar.addEventListener('click', async () => {
       await deleteCar(Number(carName.id));
+      await deleteWinner(Number(carName.id));
       this.observer.update();
+      observerForWinners.update();
     });
 
     const monsterCar = document.createElement('i');

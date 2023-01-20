@@ -18,10 +18,15 @@
 .winners-td__column {
   @include flex;
 
+  position: relative;
   width: 20%;
   height: 50px;
   color: rgb(0 0 0);
   background-color: rgb(255 255 255 / 80%);
+
+  &.sort {
+    cursor: pointer;
+  }
 }
 
 .winner-td__allRows {
@@ -35,4 +40,40 @@
   @include font(Montserrat, 1rem, 300);
 
   width: 100%;
+}
+
+.fa-arrow-up-long {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  font-size: 1.2rem;
+  color: rgb(255 255 255 / 80%);
+  cursor: pointer;
+
+  &.asc {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    top: 20px;
+    font-size: 0.7rem;
+  }
+}
+
+.fa-arrow-down-long {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  font-size: 1.2rem;
+  color: rgb(255 255 255 / 80%);
+  cursor: pointer;
+
+  &.desc {
+    display: none;
+  }
+
+  @media (max-width: 600px) {
+    top: 20px;
+    font-size: 0.8rem;
+  }
 }
