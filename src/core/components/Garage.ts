@@ -3,7 +3,6 @@ import { getCars } from '../api/getCars';
 import { ICar } from '../types/ICar';
 import { getDriveTime } from '../utils/getDriveTime';
 import { animationStopCrash } from '../utils/animationStopCrash';
-import { IObserver } from '../utils/Observable';
 import { CarMaker } from './CarMaker';
 import { CarTuner } from './CarTuner';
 import { controllers, driveCar } from '../api/driveCar';
@@ -16,8 +15,9 @@ import { animationStop } from '../utils/animationStop';
 import { ICarFieldObj } from '../types/ICarFieldObj';
 import { createWinnerInApi } from '../utils/createWinnerInApi';
 import { showWin } from '../utils/showWinRoad';
-import { observerForWinners } from '../App';
 import { deleteWinner } from '../api/deleteWinner';
+import { IObserver } from '../utils/Observable';
+import { observerForWinners } from '../App';
 
 export class Garage {
   container: HTMLElement | null = null;
