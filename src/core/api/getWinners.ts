@@ -11,12 +11,12 @@ export const getWinners = async (sort: string, pageNum: number, limitPerPage = 1
   }
 };
 
-export const getTotalWinners = async () => {
+export const getTotalWinners = async (): Promise<string | null> => {
   try {
     const response = await fetch(`${BASE_URL}${Endpoints.Winners}?_limit=10`);
     const total = response.headers.get('X-Total-Count');
     return total;
   } catch (err) {
-    return err;
+    return err as string;
   }
 };

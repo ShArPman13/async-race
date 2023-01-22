@@ -14,3 +14,12 @@
 .winners__table {
   height: 769px;
 }
+
+.winners__total {
+  @include font(Montserrat, 0.8rem, 500);
+
+  position: absolute;
+  top: 43px;
+  align-self: center;
+  color: rgb(188 188 188);
+}

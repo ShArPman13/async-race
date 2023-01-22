@@ -17,6 +17,8 @@ export class Winners {
 
   static page = 1;
 
+  public totalWinners = createElement('span', 'winners__total');
+
   constructor(public observer: IObserver<null>) {
     this.observer = observer;
     this.observe();
@@ -26,6 +28,7 @@ export class Winners {
     this.observer.subscribe(async () => {
       this.pagination();
       this.renderResults();
+      this.totalWinners.textContent = `Total: ${await getTotalWinners()} winners`;
     });
   }
 
@@ -47,7 +50,9 @@ export class Winners {
 
     this.wrapper.append(table, await this.pagination());
 
-    container.append(this.wrapper);
+    this.totalWinners.textContent = `Total: ${await getTotalWinners()} winners`;
+
+    container.append(this.wrapper, this.totalWinners);
     this.container = container;
     return this.container;
   }
