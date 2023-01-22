@@ -1,18 +1,20 @@
 import { addCar } from '../api/addCar';
 import { observer } from '../App';
+import { createElement } from '../utils/createElement';
+import { getTotalCars } from '../utils/getTotalCars';
 
 export class CarMaker {
   public container: HTMLDivElement = document.createElement('div');
 
-  public raceBTN = document.createElement('button');
+  public raceBTN = document.createElement('i');
 
-  public generateBTN = document.createElement('button');
+  public generateBTN = document.createElement('i');
 
-  public refreshBTN = document.createElement('button');
+  public refreshBTN = document.createElement('i');
 
-  public deleteBTN = document.createElement('button');
+  public total = document.createElement('span');
 
-  render() {
+  async render() {
     this.container.innerHTML = '';
     this.container.className = 'garage__car-create';
 
@@ -27,7 +29,7 @@ export class CarMaker {
     inputColor.value = '#19B9E1';
 
     const createBTN = document.createElement('i');
-    createBTN.className = 'fa-solid fa-circle-check';
+    createBTN.className = 'fa-solid fa-right-to-bracket';
 
     createBTN.addEventListener('click', async () => {
       await addCar({
@@ -35,29 +37,33 @@ export class CarMaker {
         color: inputColor.value,
       });
       observer.update();
+      this.total.textContent = await getTotalCars();
     });
 
     this.container.append(inputName, inputColor, createBTN);
     return this.container;
   }
 
-  drawRaceBlock() {
+  async drawRaceBlock() {
     const container = document.createElement('div');
     container.className = 'garage__race-block';
 
-    this.raceBTN.className = 'race-block__race';
-    this.raceBTN.textContent = 'RACE';
+    const leftBlock = createElement('div', 'race-block__left');
+    const rightBlock = createElement('div', 'race-block__right');
 
-    this.refreshBTN.className = 'race-block__refresh hidden';
-    this.refreshBTN.textContent = 'REFRESH';
+    this.raceBTN.className = 'fa-solid fa-flag-checkered';
+    this.refreshBTN.className = 'fa-solid fa-rotate-right hidden';
+    leftBlock.append(this.raceBTN, this.refreshBTN);
 
-    this.generateBTN.className = 'race-block__generate';
-    this.generateBTN.textContent = 'GENERATE';
+    const totalContainer = createElement('div', 'total-container');
+    const totalText = createElement('span', 'right__text', 'Total cars');
+    this.total.className = 'race-block__total';
+    this.total.textContent = await getTotalCars();
+    totalContainer.append(totalText, this.total);
+    this.generateBTN.className = 'fa-solid fa-square-plus';
+    rightBlock.append(totalContainer, this.generateBTN);
 
-    this.deleteBTN.className = 'race-block__delete';
-    this.deleteBTN.textContent = 'DELETE';
-
-    container.append(this.raceBTN, this.refreshBTN, this.generateBTN, this.deleteBTN);
+    container.append(leftBlock, rightBlock);
     return container;
   }
 }

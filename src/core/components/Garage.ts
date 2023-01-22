@@ -18,6 +18,8 @@ import { showWin } from '../utils/showWinRoad';
 import { deleteWinner } from '../api/deleteWinner';
 import { observerForWinners } from '../App';
 import { IObserver } from '../utils/Observable';
+import { createElement } from '../utils/createElement';
+import { getTotalCars } from '../utils/getTotalCars';
 
 export class Garage {
   container: HTMLElement | null = null;
@@ -38,6 +40,10 @@ export class Garage {
 
   winnersIDS: number[] = [];
 
+  static page = 1;
+
+  paginationHTML: HTMLElement = createElement('div', 'pagination');
+
   constructor(public observer: IObserver<null>) {
     this.addCar = new CarMaker();
     this.observer = observer;
@@ -46,6 +52,7 @@ export class Garage {
 
   observe() {
     this.observer.subscribe(() => {
+      this.pagination();
       this.drawCars();
     });
   }
@@ -63,6 +70,7 @@ export class Garage {
 
   async startRaceAllCars(timeMS: number[]) {
     controllers.length = 0;
+
     this.arrayOfCarFields.map(async (car: ICarFieldObj, i) => {
       const winPoint = car.finish;
       const seconds = Number((timeMS[i] / 1000).toFixed(2));
@@ -110,51 +118,36 @@ export class Garage {
 
     const topContainer = document.createElement('div');
     topContainer.className = 'garage__top-container';
-    topContainer.append(this.addCar.render(), this.addCar.drawRaceBlock());
+    topContainer.append(await this.addCar.render(), await this.addCar.drawRaceBlock());
 
     this.addCar.generateBTN.addEventListener('click', async () => {
       const cars = generateCars();
       try {
         await Promise.all(cars.map(async (car) => addCar(car))).catch(Error);
         this.observer.update();
+        this.addCar.total.textContent = await getTotalCars();
       } catch (err) {
-        console.log('104', err);
-      }
-    });
-
-    this.addCar.deleteBTN.addEventListener('click', async () => {
-      try {
-        const cars = await getCars();
-        await Promise.all(cars.map(async (car: ICar) => deleteCar(car.id))).catch(Error);
-        this.observer.update();
-      } catch (err) {
-        console.log('110', err);
+        /* empty */
       }
     });
 
     this.addCar.raceBTN.addEventListener('click', async () => {
       this.addCar.raceBTN.classList.add('hidden');
-      this.addCar.refreshBTN.classList.remove('hidden');
       try {
         const timeMS = await Promise.all(this.getAllTimeBeforeRace());
         await this.startRaceAllCars(timeMS);
       } catch (err) {
-        console.log('117', err);
+        return;
       }
+      this.addCar.refreshBTN.classList.remove('hidden');
     });
 
-    this.addCar.refreshBTN.addEventListener('click', async () => {
-      this.addCar.refreshBTN.classList.add('hidden');
-      try {
-        await Promise.all(this.stopRaceAllCars());
-      } catch (err) {
-        console.log('126', err);
-      }
-      this.addCar.raceBTN.classList.remove('hidden');
+    this.addCar.refreshBTN.addEventListener('click', () => {
+      this.refresh();
     });
 
     wrapper.append(topContainer);
-    wrapper.append(await this.drawCars());
+    wrapper.append(await this.drawCars(), await this.pagination());
 
     container.append(wrapper);
     this.container = container;
@@ -163,7 +156,8 @@ export class Garage {
   }
 
   async drawCars() {
-    this.cars = await getCars();
+    const { res } = await getCars(Garage.page);
+    this.cars = await res;
 
     this.carsContainer.innerHTML = '';
 
@@ -208,6 +202,7 @@ export class Garage {
       await deleteWinner(Number(carName.id));
       this.observer.update();
       observerForWinners.update();
+      this.addCar.total.textContent = await getTotalCars();
     });
 
     const monsterCar = document.createElement('i');
@@ -272,5 +267,57 @@ export class Garage {
 
   fillArrayOfCarFields(item: ICarFieldObj) {
     this.arrayOfCarFields.push(item);
+  }
+
+  async refresh() {
+    this.addCar.refreshBTN.classList.add('hidden');
+    try {
+      await Promise.all(this.stopRaceAllCars());
+    } catch (err) {
+      return;
+    }
+    this.addCar.raceBTN.classList.remove('hidden');
+  }
+
+  async pagination() {
+    const totalPages = Math.ceil(Number(await getTotalCars()) / 7);
+    this.paginationHTML.innerHTML = '';
+
+    const left = createElement('i', 'fa-solid fa-square-caret-left');
+    const right = createElement('i', 'fa-solid fa-square-caret-right');
+    const page = createElement('span', 'pagination__page', `${Garage.page}`);
+
+    if (Garage.page === 1) {
+      left.classList.add('hidden');
+    } else left.classList.remove('hidden');
+
+    if (Garage.page === totalPages) {
+      right.classList.add('hidden');
+    } else right.classList.remove('hidden');
+
+    left.addEventListener('click', () => {
+      if (Garage.page > 1) {
+        Garage.page -= 1;
+      }
+      if (this.addCar.raceBTN.classList.contains('hidden')) {
+        this.refresh();
+      }
+
+      this.observer.update();
+    });
+
+    right.addEventListener('click', async () => {
+      if (Garage.page < totalPages) {
+        Garage.page += 1;
+      }
+      if (this.addCar.raceBTN.classList.contains('hidden')) {
+        this.refresh();
+      }
+
+      this.observer.update();
+    });
+
+    this.paginationHTML.append(left, page, right);
+    return this.paginationHTML;
   }
 }

@@ -1,0 +1,42 @@
+.footer {
+  @include flex;
+
+  @media (max-width: 600px) {
+    top: 910px;
+  }
+}
+
+.footer-wrapper {
+  @include flex;
+
+  align-items: flex-end;
+  justify-content: space-around;
+  width: 100%;
+  height: max-content;
+  max-width: 1400px;
+  gap: 15px;
+
+  img {
+    height: 25px;
+    opacity: 0.3;
+    transition: 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.7;
+      transition: 0.2s;
+    }
+  }
+
+  @media (max-width: 600px) {
+    gap: 10px;
+  }
+}
+
+.footer__year {
+  @include font(Montserrat, 1rem, 300);
+
+  position: relative;
+  right: 23px;
+  opacity: 0.3;
+}

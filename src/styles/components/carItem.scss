@@ -8,7 +8,7 @@
   border-radius: 10px;
   padding: 10px;
   width: 100%;
-  height: 100px;
+  height: 62px;
   color: rgb(255 255 255);
   background-color: rgb(0 0 0 / 70%);
   gap: 10px;
@@ -18,13 +18,17 @@
   @include flex;
 
   position: relative;
-  top: -20px;
-  gap: 10px;
+  top: -13px;
+  gap: 7px;
 
   .cars-container__name {
     @include font(Montserrat, 1.5rem, 300);
 
     opacity: 0.8;
+
+    @media (max-width: 650px) {
+      font-size: 1rem;
+    }
   }
 
   .fa-wrench {
@@ -72,22 +76,22 @@
 
 .cars-container__road {
   position: relative;
-  top: 15px;
+  top: 12px;
   border-bottom: dashed 2px rgb(255 255 255 / 70%);
   width: 100%;
   height: 1px;
 
   .fa-truck-monster {
     position: absolute;
-    top: -65px;
-    font-size: 4rem;
+    top: -43px;
+    font-size: 2.7rem;
   }
 
   .material-symbols-outlined {
     position: absolute;
     right: 50px;
-    top: -101px;
-    font-size: 7.5rem;
+    top: -76px;
+    font-size: 5.5rem;
     opacity: 0.6;
 
     &.won {
@@ -102,10 +106,16 @@
         right: 100px;
         top: 25%;
 
-        @media (max-width: 600px) {
-          font-size: 1rem;
+        @media (max-width: 650px) {
+          right: 70px;
+          top: 50%;
+          font-size: 0.8rem;
         }
       }
+    }
+
+    @media (max-width: 650px) {
+      right: 10px;
     }
   }
 }

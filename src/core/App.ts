@@ -1,3 +1,4 @@
+import { Footer } from './components/Footer';
 import { Garage } from './components/Garage';
 import { Header } from './components/Header';
 import { SingletonGarage } from './components/SingletonGarage';
@@ -11,10 +12,13 @@ export const observerForWinners = Observable<null>();
 export class App {
   container: HTMLElement = document.body;
 
-  header: Header;
+  public header: Header;
+
+  public footer: Footer;
 
   constructor() {
     this.header = new Header();
+    this.footer = new Footer();
   }
 
   async renderPage(idPage: string) {
@@ -38,7 +42,7 @@ export class App {
       wrapper.append(pageHTML);
 
       containerMain.append(wrapper);
-      this.container.append(this.header.render(), containerMain);
+      this.container.append(this.header.render(), containerMain, this.footer.render());
     }
   }
 

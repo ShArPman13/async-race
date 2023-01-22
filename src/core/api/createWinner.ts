@@ -13,7 +13,6 @@ export const createWinner = async (body: ICarWin) => {
     });
     return response.json();
   } catch (err) {
-    console.log(err);
     return err;
   }
 };

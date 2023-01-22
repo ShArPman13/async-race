@@ -28,3 +28,13 @@
 .garage__input {
   flex-shrink: 0;
 }
+
+.fa-right-to-bracket {
+  font-size: 2rem;
+  color: rgb(106 106 106);
+  cursor: pointer;
+
+  &:hover {
+    color: rgb(4 163 4);
+  }
+}
