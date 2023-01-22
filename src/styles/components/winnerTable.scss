@@ -13,6 +13,10 @@
   @media (max-width: 600px) {
     font-size: 1rem;
   }
+
+  @media (max-width: 470px) {
+    font-size: 0.8rem;
+  }
 }
 
 .winners-td__column {
@@ -44,7 +48,7 @@
 
 .fa-arrow-up-long {
   position: absolute;
-  right: 10px;
+  right: 5px;
   top: 15px;
   font-size: 1.2rem;
   color: rgb(255 255 255 / 80%);

@@ -1,3 +1,4 @@
+import { getTotalWinners } from '../api/getWinners';
 import { SORT_BY } from '../constants/SORT_BY';
 import { SortOption } from '../types/SortOption';
 import { createElement } from '../utils/createElement';
@@ -12,6 +13,10 @@ export class Winners {
 
   wrapperResults = document.createElement('div');
 
+  public paginationHTML = createElement('div', 'pagination');
+
+  static page = 1;
+
   constructor(public observer: IObserver<null>) {
     this.observer = observer;
     this.observe();
@@ -19,6 +24,7 @@ export class Winners {
 
   observe() {
     this.observer.subscribe(async () => {
+      this.pagination();
       this.renderResults();
     });
   }
@@ -32,11 +38,14 @@ export class Winners {
     container.className = 'winners';
     this.wrapper.className = 'winners-wrapper';
 
-    const results = await drawResults(await getWinData());
+    const results = await drawResults(await getWinData(Winners.page));
     this.wrapperResults.className = 'results-wrapper';
     this.wrapperResults.append(results);
 
-    this.wrapper.append(await this.drawTable(), this.wrapperResults);
+    const table = createElement('div', 'winners__table');
+    table.append(await this.drawTable(), this.wrapperResults);
+
+    this.wrapper.append(table, await this.pagination());
 
     container.append(this.wrapper);
     this.container = container;
@@ -44,7 +53,7 @@ export class Winners {
   }
 
   async renderResults() {
-    const results = await drawResults(await getWinData());
+    const results = await drawResults(await getWinData(Winners.page));
     this.wrapperResults.innerHTML = '';
     this.wrapperResults.append(results);
   }
@@ -87,7 +96,7 @@ export class Winners {
   }
 
   async listener(sortOption: string) {
-    const results = await drawResults(await getWinData(sortOption));
+    const results = await drawResults(await getWinData(Winners.page, sortOption));
     this.wrapperResults.innerHTML = '';
     this.wrapperResults.append(results);
   }
@@ -121,5 +130,40 @@ export class Winners {
       down.classList.add('desc');
       this.listener(sortingASC);
     }
+  }
+
+  async pagination() {
+    const totalPages = Math.ceil(Number(await getTotalWinners()) / 10);
+    this.paginationHTML.innerHTML = '';
+
+    const left = createElement('i', 'fa-solid fa-square-caret-left');
+    const right = createElement('i', 'fa-solid fa-square-caret-right');
+    const page = createElement('span', 'pagination__page', `${Winners.page}`);
+
+    if (Winners.page === 1) {
+      left.classList.add('hidden');
+    } else left.classList.remove('hidden');
+
+    if (Winners.page === totalPages) {
+      right.classList.add('hidden');
+    } else right.classList.remove('hidden');
+
+    left.addEventListener('click', () => {
+      if (Winners.page > 1) {
+        Winners.page -= 1;
+      }
+      this.observer.update();
+    });
+
+    right.addEventListener('click', async () => {
+      if (Winners.page < totalPages) {
+        Winners.page += 1;
+      }
+
+      this.observer.update();
+    });
+
+    this.paginationHTML.append(left, page, right);
+    return this.paginationHTML;
   }
 }

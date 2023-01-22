@@ -13,7 +13,6 @@ export const updateWinner = async (id: number, body: Omit<ICarWin, 'id'>) => {
     });
     return response.json();
   } catch (err) {
-    console.log(err);
     return err;
   }
 };
