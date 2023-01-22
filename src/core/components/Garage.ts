@@ -200,9 +200,15 @@ export class Garage {
     delCar.addEventListener('click', async () => {
       await deleteCar(Number(carName.id));
       await deleteWinner(Number(carName.id));
+
       this.observer.update();
       observerForWinners.update();
       this.addCar.total.textContent = await getTotalCars();
+
+      if (this.cars.length === 0) {
+        Garage.page -= 1;
+        this.observer.update();
+      }
     });
 
     const monsterCar = document.createElement('i');
