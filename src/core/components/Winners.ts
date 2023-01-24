@@ -102,6 +102,7 @@ export class Winners {
 
   async listener(sortOption: string) {
     const results = await drawResults(await getWinData(Winners.page, sortOption));
+
     this.wrapperResults.innerHTML = '';
     this.wrapperResults.append(results);
   }
