@@ -1,0 +1,38 @@
+input,
+textarea,
+input:active,
+textarea:active {
+  outline: none;
+  border: 2px solid rgb(255 255 255);
+  border-radius: 3px;
+  width: 80%;
+  height: 23px;
+  background-color: transparent;
+}
+
+.input-text:focus::input-placeholder {
+  outline: 0;
+  outline-offset: 0;
+  border: 0;
+  color: transparent;
+}
+
+input::input-placeholder {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+input::placeholder {
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+input:focus::input-placeholder {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+input:focus::placeholder {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}

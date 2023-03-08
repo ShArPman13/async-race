@@ -1,0 +1,15 @@
+export const CAR_MODELS = [
+  'RX350',
+  'Prado',
+  '308',
+  'Tundra',
+  '911',
+  'California',
+  'Astra',
+  'X-Trail',
+  'Stelvio',
+  'Ghibli',
+  'Wrangler',
+  'Diablo',
+  'C4',
+];

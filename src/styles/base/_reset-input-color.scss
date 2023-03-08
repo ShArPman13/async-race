@@ -1,0 +1,19 @@
+input[type="color"] {
+  appearance: none;
+  border: none;
+  border-radius: 1px;
+  width: 35px;
+  height: 35px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 1px;
+}
+
+input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 1px;
+}

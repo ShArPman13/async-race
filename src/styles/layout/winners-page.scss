@@ -1,0 +1,25 @@
+.winners-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.winners {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.winners__table {
+  height: 769px;
+}
+
+.winners__total {
+  @include font(Montserrat, 0.8rem, 500);
+
+  position: absolute;
+  top: 43px;
+  align-self: center;
+  color: rgb(188 188 188);
+}

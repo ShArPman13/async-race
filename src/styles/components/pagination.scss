@@ -1,0 +1,32 @@
+.pagination {
+  @include flex;
+
+  position: relative;
+  z-index: 2;
+  gap: 10px;
+}
+
+.fa-square-caret-left,
+.fa-square-caret-right {
+  font-size: 2rem;
+  opacity: 0.5;
+  transition: 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+    transition: 0.2s;
+  }
+
+  &.hidden {
+    opacity: 0.1;
+    cursor: auto;
+    pointer-events: none;
+  }
+}
+
+.pagination__page {
+  @include font(Montserrat, 1rem, 300);
+
+  opacity: 0.7;
+}

@@ -1,0 +1,46 @@
+body {
+  background-image: url("./assets/images/main_back.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+#root {
+  @include flex;
+
+  padding-top: 60px;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.main-wrapper {
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+}
+
+.garage-wrapper {
+  width: 100%;
+  max-width: 1400px;
+}
+
+.garage__top-container {
+  @include flex;
+
+  justify-content: space-between;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    margin-bottom: 20px;
+    gap: 20px;
+  }
+}
+
+.garage__cars-container {
+  @include flex;
+
+  flex-direction: column;
+  justify-content: stretch;
+  padding: 10px;
+  height: 675px;
+  gap: 15px;
+}

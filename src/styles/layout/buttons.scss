@@ -1,0 +1,15 @@
+.header__btn {
+  @include flex;
+  @include font(Josefin Sans, 1rem, 500);
+
+  border: none;
+  background-color: transparent;
+  opacity: 0.5;
+  transition: 0.25s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+    transition: 0.25s;
+  }
+}
