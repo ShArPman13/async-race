@@ -36,7 +36,6 @@ export class App {
       const pageHTML = await page.render();
       const containerMain = document.createElement('main');
       containerMain.id = 'root';
-
       const wrapper = document.createElement('div');
       wrapper.className = 'main-wrapper';
       wrapper.append(pageHTML);

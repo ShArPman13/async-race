@@ -106,12 +106,26 @@ export class Garage {
     });
   }
 
+  loader() {
+    const loader = document.createElement('div');
+    const topText = document.createElement('span');
+    const bottomText = document.createElement('span');
+    topText.textContent = 'Server is loading...';
+    bottomText.textContent = 'Please wait some time :)';
+    loader.className = 'loader';
+    loader.append(topText, bottomText);
+    return loader;
+  }
+
   async render() {
     if (this.container) {
       return this.container;
     }
+
     const container = document.createElement('div');
     container.className = 'garage';
+
+    document.body.append(this.loader());
 
     const wrapper = document.createElement('div');
     wrapper.className = 'garage-wrapper';
@@ -150,6 +164,7 @@ export class Garage {
     wrapper.append(await this.drawCars(), await this.pagination());
 
     container.append(wrapper);
+    document.querySelector('.loader')?.classList.add('hidden');
     this.container = container;
 
     return container;
